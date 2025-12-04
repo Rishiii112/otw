@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-commuter-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule,RouterLink],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './commuter.html',
   styleUrls: ['./commuter.css']
 })
@@ -120,17 +120,17 @@ toggleChat() {
   openSettings() { this.showSettings = true; }
   closeSettings() { this.showSettings = false; }
 
-  // logout() {
-  //   signOut(this.auth).then(() => {
-  //     alert('Logged out successfully!');
-  //     window.location.href = '/login';
-  //   });
-  // }
-logout() {
-  signOut(this.auth).then(() => {
-    localStorage.removeItem('user');
-    this.router.navigate(['/login']);
-  });}
+  logout() {
+    signOut(this.auth).then(() => {
+      alert('Logged out successfully!');
+      window.location.href = '/login';
+    });
+  }
+// logout() {
+//   signOut(this.auth).then(() => {
+//     localStorage.removeItem('user');
+//     this.router.navigate(['/login']);
+//   });}
 
   // ===== Lifecycle =====
   ngAfterViewInit() {

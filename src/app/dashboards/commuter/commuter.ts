@@ -120,7 +120,7 @@ toggleChat() {
   logout() {
     signOut(this.auth).then(() => {
       alert('Logged out successfully!');
-      window.location.href = '/login';
+      window.location.href = '/commuter-dashboard/login';
     });
   }
 

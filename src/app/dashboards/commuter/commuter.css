@@ -1,435 +1,376 @@
-/* ==================== TOP BAR ==================== */
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  border-bottom: 2px solid #FF4500;
-  padding: 0.5rem 1rem;
-  font-family: Arial, sans-serif;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.top-bar-left .toggle-tools-btn {
-  background-color: #FF4500;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
-}
-.top-bar-left .toggle-tools-btn:hover { background-color: #e65c00; }
-
-.top-bar-right {
+.otw-commuter-shell {
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
 }
 
-/* Chat button */
-.chat-btn {
-  background-color: #FF4500;
-  color: #fff;
-  border-radius: 50px;
-  border: none;
-  padding: 6px 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.chat-btn:hover { background-color: #e65c00; }
+/* DESKTOP / LARGE VIEW: phone mockup */
 
-/* ==================== ACCOUNT DROPDOWN OVERLAY ==================== */
-.account-dropdown {
+.phone-frame {
   position: relative;
-  display: inline-block;
-  z-index: 2000; /* make sure it overlays other content */
+  width: 500px;      /* overall phone width */
+  max-width: 100vw;
 }
 
-/* Dropdown menu forward/overlay */
-.dropdown-menu {
-  display: none;
-  position: fixed; /* change from absolute to fixed */
-  top: 55px;       /* align with top bar */
-  right: 1rem;     /* distance from right edge */
-  background-color: white;
-  border: 1px solid #FF4500;
-  border-radius: 6px;
-  min-width: 160px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 2500; /* higher than sidebars */
-  padding: 0.5rem 0;
-}
-.account-dropdown { position: relative; display: inline-block; }
-.account-btn {
-  background-color: white;
-  color: #FF4500;
-  border: 1px solid #FF4500;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-.account-btn:hover { background-color: #FF4500; color: white; }
-
-/* Show dropdown */
-.account-dropdown.open .dropdown-menu {
+.phone-image {
+  width: 100%;
   display: block;
 }
 
-/* Dropdown items */
-.dropdown-menu li {
-  list-style: none;
+/* Screen hole of the mockup */
+.phone-screen {
+  position: absolute;
+  top: 19px;         /* move down so top aligns under notch */
+  left: 80.5px;
+  width: 340px;
+  height: 690px;     /* only the visible glass */
+  overflow: hidden;
+  border-radius: 40px;  /* rounds all corners, including bottom */
 }
-.dropdown-menu button {
+
+/* make map stretch to full phone-screen area */
+.map-frame {
+  padding: 0;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  border-radius: 0;  /* let phone-screen handle the rounding */
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* === FLOATING TOP NAV BAR === */
+.gm-top-nav {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 1000;
+}
+
+.gm-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Search pill centered, limited width */
+.gm-search-pill {
+  flex: 1;
+  height: 36px;
+  border-radius: 999px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  max-width: 230px; /* cap so it doesn't hit avatar */
+}
+
+.gm-search-icon {
+  margin-right: 6px;
+}
+
+.gm-search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 13px;
+  color: #111827;
+  background: transparent;
+}
+
+.gm-icon-btn.small {
+  font-size: 15px;
+}
+
+/* avatar */
+.gm-avatar-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #166534;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* avatar dropdown */
+.gm-account-menu {
+  position: absolute;
+  top: 44px;
+  right: 8px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+  z-index: 1200;
+}
+
+.gm-account-menu button {
   background: none;
   border: none;
-  color: #FF4500;
-  width: 100%;
+  padding: 6px 10px;
   text-align: left;
-  padding: 10px 16px;
-  font-weight: 500;
+  font-size: 13px;
+  color: #111827;
   cursor: pointer;
-  transition: background 0.2s;
-}
-.dropdown-menu button:hover {
-  background-color: #FF4500;
-  color: white;
-  border-radius: 4px;
 }
 
-
-/* ==================== LAYOUT ==================== */
-.main-content-wrapper {
+/* === CATEGORY CHIPS === */
+.gm-chip-row {
+  position: absolute;
+  top: 54px;
+  left: 8px;
+  right: 8px;
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: flex-start;
+  gap: 6px;
+  overflow-x: auto;
+  z-index: 1000;
 }
 
-/* ==================== TOOLS SIDEBAR (Clean Minimalist) ==================== */
+.gm-chip {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 12px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+/* === RIGHT CONTROLS === */
+.gm-right-controls {
+  position: absolute;
+  right: 8px;
+  bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 1000;
+}
+
+.gm-round-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* === BOTTOM INFO BAR (nearest jeepney) === */
+.gm-bottom-bar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 16px;
+  z-index: 1000;
+}
+
+.gm-bottom-main {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 8px 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.gm-bottom-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.gm-bottom-sub {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+/* === TOOLS PANEL (LEFT SLIDE) === */
 .map-sidebar {
   position: fixed;
-  top: 55px;
-  left: -260px; /* hidden initially */
-  width: 260px;
-  height: 100%;
-  background: #ffffff;
-  border-right: 2px solid #FF4500; /* <-- changed from border-left to border-right */
-  border-radius: 0 12px 12px 0;
-  padding: 1.5rem 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  z-index: 1500;
-  font-family: 'Segoe UI', sans-serif;
-  overflow-y: auto;
-  transition: left 0.35s ease, box-shadow 0.35s ease;
-}
-
-/* Sidebar visible */
-.map-sidebar.visible {
+  top: 0;
+  bottom: 0;
   left: 0;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  width: 260px;
+  max-width: 75vw;
+  padding: 0.75rem 0.75rem 1rem;
+  background-color: #111827;
+  color: #e5e7eb;
+  border-right: 1px solid rgba(30, 64, 175, 0.45);
+  transform: translateX(-100%);
+  transition: transform 0.2s ease-out;
+  z-index: 1300;
 }
 
-/* Sidebar header */
-.map-sidebar .sidebar-header {
-  font-size: 1.15rem;
-  font-weight: 400;
-  color: #FF4500;
-  margin-bottom: 1rem; 
-  display: flex;
-  flex-direction: column; /* stack header and button */
-  align-items: flex-start;
-  gap: 0.8rem; 
+.map-sidebar.visible {
+  transform: translateX(0);
 }
 
-/* "My Location" button under header */
-.map-sidebar .sidebar-header .btn {
-  width: 100%;
-  padding: 8px;
-  font-size: 0.95rem;
-  border-radius: 15px;
-  background-color: #FF4500;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.map-sidebar .sidebar-header .btn:hover {
-  background-color: #e65c00;
-  transform: translateY(-1px);
-}
-
-/* Control row spacing */
-.map-sidebar .control-row {
+.sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
-  gap: 0.5rem; /* spacing between number input and button */
+  margin-bottom: 0.5rem;
 }
 
-
-/* Labels */
-.map-sidebar label {
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #FF4500;
-}
-
-/* Range input */
-.map-sidebar input[type="range"] {
-  flex: 1;
-  height: 5px;
-  border-radius: 3px;
-  background: #ffd6b3;
-  accent-color: #FF4500;
-  margin-left: 0.5rem;
-}
-
-/* Number input */
-.map-sidebar input[type="number"] {
-  width: 70px;
-  border: 1px solid #FF4500;
-  border-radius: 6px;
-  padding: 5px 6px;
-  font-size: 0.9rem;
-  text-align: center;
-  font-weight: 400;
-  color: #FF4500;
-  background: #fff;
-  transition: all 0.2s;
-}
-.map-sidebar input[type="number"]:focus {
-  border-color: #e65c00;
-  box-shadow: 0 0 4px rgba(230, 92, 0, 0.2);
-}
-
-/* ==================== Minimalist Buttons ==================== */
-.map-sidebar .btn {
-  background-color: #FF4500;
-  color: #fff;
-  border-radius: 15px;
-  border: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 8px;
-  width: 100%; /* Equal width */
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-.map-sidebar .btn:hover {
-  background-color: #e65c00;
-  transform: translateY(-1px);
-}
-
-/* Coordinates box */
-.map-sidebar .coords {
-  font-size: 0.85rem;
-  color: #FF4500;
-  text-align: center;
-  margin-top: 0.8rem;
-  padding: 0.5rem;
-  background-color: #fff8f6;
-  border-radius: 8px;
-  border: 1px solid #FF4500;
-}
-
-/* Info text */
-.map-sidebar .small {
-  font-size: 0.9rem;
-  color: white;
-  text-align: center;
-  margin-top: 0.5rem;
-}
-
-/* Scrollbar */
-.map-sidebar::-webkit-scrollbar {
-  width: 5px;
-}
-.map-sidebar::-webkit-scrollbar-thumb {
-  background-color: rgba(255,69,0,0.5);
-  border-radius: 3px;
-}
-
-/* ==================== MOBILE RESPONSIVE ==================== */
-@media screen and (max-width: 680px) {
-  .map-sidebar {
-    width: 75%;
-    left: -80%;
-    height: calc(100vh - 55px);
-    border-radius: 0 12px 12px 0;
-    padding: 1.2rem 0.8rem;
-  }
-  .map-sidebar.visible {
-    left: 0;
-  }
-  .map-wrapper {
-    width: 90%;
-    margin-left: 0; /* more left */
-  }
-  .right-dashboard {
-    width: 90%;
-    right: -95%;
-  }
-  .right-dashboard.show {
-    right: 0;
-  }
-}
-
-
-/* ==================== MAIN CONTENT (MAP) ==================== */
-.main-content {
-  flex: 1;
+.control-row {
   display: flex;
-  justify-content: center; /* center horizontally */
-  padding: 1rem;
-  margin-left: 0; /* removed fixed margin to allow centering */
-  margin-right: 0;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
 }
 
-/* Map */
-.map-wrapper {
-  width: 100%;
-  max-width: 900px;
-  height: 400px;
-  border: 3px solid #FF4500;
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  background: #f7f7f7;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.coords {
+  font-size: 0.8rem;
 }
 
-/* Actual map inside wrapper */
-.map { 
-  width: 100%; 
-  height: 100%; 
-  border-radius: 10px; 
+.small {
+  font-size: 0.8rem;
 }
 
-/* Map absolute positioning */
-#map {
-  width: 100% !important;
-  height: 100% !important;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-/* ==================== MOBILE RESPONSIVE ==================== */
-@media screen and (max-width: 680px) {
-  .main-content {
-    justify-content: center; /* ensure map stays centered */
-    padding: 0.5rem;
-  }
-  .map-wrapper {
-    width: 90%;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-}
-
-
-/* ==================== RIGHT DASHBOARD ==================== */
+/* === CHAT / COMMUNITY PANEL (RIGHT SLIDE) === */
 .right-dashboard {
-  width: 320px;
-  background: #fff;
-  border-left: 3px solid #FF4500;
-  padding: 1rem;
-  overflow-y: auto;
   position: fixed;
-  top: 60px;
-  right: -540px;
-  height: calc(100vh - 60px);
-  transition: right 0.3s ease;
-  z-index: 1500;
-}
-.right-dashboard.show {
+  top: 0;
   right: 0;
+  bottom: 0;
+  width: 320px;
+  max-width: 85vw;
+  background: #111827;
+  color: #e5e7eb;
+  box-shadow: -10px 0 24px rgba(0, 0, 0, 0.85);
+  transform: translateX(100%);
+  transition: transform 0.25s ease-out;
+  z-index: 1300;
+  padding: 1rem;
 }
 
-/* Community */
-.community { background: #fff; padding: 1rem; }
-.community-input textarea { width: 100%; border: 2px solid #FF4500; border-radius: 10px; padding: 0.5rem; }
-.post-btn { background-color: #FF4500; color: #fff; border-radius: 50px; border: 2px solid #FF4500; font-weight: 600; }
-.post-btn:hover { background-color: #e65c00; }
+.right-dashboard.show {
+  transform: translateX(0);
+}
 
-/* ==================== SETTINGS MODAL ==================== */
+.community-input textarea {
+  min-height: 52px;
+  font-size: 0.85rem;
+}
+
+.post-btn {
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #ff9b3a, #ffb767);
+  color: #111827;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.community-list,
+.chat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.8rem;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.community-list li,
+.chat-list li {
+  margin-bottom: 0.4rem;
+}
+
+.community-list .time {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+/* === SETTINGS MODAL === */
 .modal {
   position: fixed;
-  top:0; left:0; width:100%; height:100%;
-  background-color: rgba(0,0,0,0.5);
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2000;
 }
+
 .modal-content {
-  background: #fff;
-  border: 2px solid #FF4500;
-  border-radius: 15px;
-  padding: 2rem;
-  width: 300px;
-  max-width: 90%;
-}
-.modal-content input { border: 2px solid #FF4500; border-radius: 10px; width: 100%; padding: 0.5rem; margin-top: 0.5rem; }
-.modal-content .btn { background-color: #FF4500; color: #fff; border-radius: 50px; border: 2px solid #FF4500; font-weight: 600; margin-top: 0.5rem; width: 100%; }
-.modal-content .btn:hover { background-color: #e65c00; }
-
-/* ==================== RESPONSIVE ==================== */
-@media screen and (max-width: 680px) {
-  .main-content { margin-left: 0; width: 95%; }
-  .map-sidebar { position: fixed; width: 80%; left: -80%; height: calc(100vh - 55px); z-index: 1200; }
-  .map-sidebar.visible { left: 0; }
-  .map-wrapper, .right-dashboard { width: 95%; }
-}
-
-
-/* Nearest Jeepney Info below map */
-.nearest-jeepney {
+  background: #111827;
+  color: #f9fafb;
+  border-radius: 16px;
+  padding: 1.4rem 1.6rem;
   width: 100%;
-  max-width: 300px; /* narrower than map */
-  margin: 15px auto 30px auto; /* center horizontally */
-  padding: 1rem 1rem;
-  background-color: #fff;
-  border: 2px solid #FF4500; /* visible but not too wide */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', sans-serif;
-  text-align: center; /* center text */
+  max-width: 380px;
 }
+/* SMALL SCREENS: hide frame, show full-screen map */
+@media (max-width: 400px) {
+  .otw-commuter-shell {
+    min-height: 100vh;
+    align-items: stretch;
+    justify-content: stretch;
+  }
 
-.nearest-jeepney h4 {
-  color: #FF4500;
-  margin-bottom: 0.8rem;
-}
+  .phone-image {
+    display: none;      /* hide the mockup PNG */
+  }
 
-.nearest-jeepney ul {
-  padding-left: 0;
-  margin: 0;
-  list-style: none; /* remove bullets */
-}
+  .phone-frame {
+    width: 100vw;
+    max-width: 100vw;
+  }
 
-.nearest-jeepney li {
-  font-size: 0.95rem;
-  color: #333;
-  margin-bottom: 0.6rem;
-  border-bottom: 1px solid #ffd6b3; /* subtle separator */
-  padding: 4px 0;
-}
+  .phone-screen {
+    position: static;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
 
-/* Responsive */
-@media screen and (max-width: 680px) {
-  .nearest-jeepney {
-    width: 90%;
-    margin: 15px auto;
-    padding: 0.8rem 1rem;
+  .map-frame {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
   }
 }
-

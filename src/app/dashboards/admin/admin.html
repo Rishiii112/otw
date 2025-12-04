@@ -1,102 +1,157 @@
-<hr class="my-4">
-
-<!-- ADD DRIVER BUTTON -->
-<button type="button" class="btn btn-success mb-4" routerLink="/admin/dashboard/add-driver">
-  Add Driver Account
-</button>
-
-<div class="text-end mb-3">
-  <button class="btn btn-warning" (click)="logout()">Logout</button>
-</div>
-
-<!-- ============================= -->
-<!-- DRIVER ACCOUNTS -->
-<!-- ============================= -->
-<h2 class="mb-3">Driver Accounts</h2>
-
-<div *ngIf="drivers().length === 0" class="alert alert-info">
-  No drivers found.
-</div>
-
-<div class="card shadow mb-3" *ngFor="let d of drivers()">
-  <div class="card-body">
-
-    <!-- Normal View -->
-    <div *ngIf="editDriverId !== d.id">
-      <h4>{{ d.name }}</h4>
-      <p><strong>Email:</strong> {{ d.email }}</p>
-      <p><strong>License:</strong> {{ d.license }}</p>
-      <p><strong>Plate:</strong> {{ d.plate }}</p>
-
-      <div class="text-end mt-2">
-        <button class="btn btn-primary me-2" (click)="startDriverEdit(d)">Update</button>
-        <button class="btn btn-danger" (click)="deleteDriverAccount(d.id)">Delete</button>
-      </div>
+<div class="otw-admin-shell">
+  <!-- Sidebar -->
+  <aside class="otw-admin-sidebar">
+<div>
+  <div class="otw-admin-brand-row">
+    <div class="otw-admin-brand">
+      <div class="otw-admin-logo"></div>
+      <span class="otw-admin-brand-text">OTW</span>
     </div>
 
-    <!-- Edit Mode -->
-    <div *ngIf="editDriverId === d.id">
-      <h5>Edit Driver</h5>
-      <input class="form-control mb-2" [(ngModel)]="editDriverName" placeholder="Full Name">
-      <input class="form-control mb-2" [(ngModel)]="editDriverEmail" placeholder="Email">
-      <input class="form-control mb-2" [(ngModel)]="editDriverLicense" placeholder="License">
-      <input class="form-control mb-2" [(ngModel)]="editDriverPlate" placeholder="Plate">
+    <!-- Dropdown trigger -->
+    <div class="otw-admin-user-dropdown" (click)="userMenuOpen = !userMenuOpen">
+      <div class="otw-admin-user-circle">ADMIN</div>
+      <span class="otw-admin-user-caret">▾</span>
 
-      <div class="text-end">
-        <button class="btn btn-success me-2"
-          (click)="updateDriver(d.id, {
-            name: editDriverName,
-            email: editDriverEmail,
-            license: editDriverLicense,
-            plate: editDriverPlate
-          })">
-          Save
+      <!-- Dropdown menu -->
+      <div class="otw-admin-user-menu" *ngIf="userMenuOpen">
+        <button type="button" class="otw-user-menu-item" (click)="logout()">
+          Logout
         </button>
-        <button class="btn btn-secondary" (click)="cancelDriverEdit()">Cancel</button>
       </div>
     </div>
+  </div>
 
+  <!-- Toggle buttons under logo -->
+  <div class="otw-admin-toggle">
+    <button
+      class="otw-toggle-btn"
+      [class.active]="activeSection === 'drivers'"
+      (click)="showDrivers()">
+      Driver Accounts
+    </button>
+    <button
+      class="otw-toggle-btn"
+      [class.active]="activeSection === 'commuters'"
+      (click)="showCommuters()">
+      Commuter Accounts
+    </button>
   </div>
 </div>
 
-<hr class="my-4">
 
-<!-- ============================= -->
-<!-- COMMUTER ACCOUNTS -->
-<!-- ============================= -->
-<h2 class="mb-3">Commuter Accounts</h2>
+  </aside>
 
-<div *ngIf="commuters().length === 0" class="alert alert-secondary">
-  No commuters found.
-</div>
-
-<div class="card shadow mb-3" *ngFor="let c of commuters()">
-  <div class="card-body">
-
-    <!-- Normal view -->
-    <div *ngIf="editId !== c.id">
-      <h4>{{ c.name }}</h4>
-      <p class="mb-1"><strong>Email:</strong> {{ c.email }}</p>
-
-      <div class="text-end mt-2">
-        <button class="btn btn-primary me-2" (click)="startEdit(c)">Update</button>
-        <button class="btn btn-danger" (click)="deleteCommuter(c.id)">Delete</button>
+  <!-- Main content -->
+  <main class="otw-admin-content">
+    <!-- Summary row -->
+    <section class="otw-admin-summary">
+      <div class="otw-summary-card">
+        <span class="otw-summary-label">Drivers</span>
+        <span class="otw-summary-value">{{ drivers().length }}</span>
       </div>
-    </div>
-
-    <!-- Edit mode -->
-    <div *ngIf="editId === c.id">
-      <h5>Edit Commuter</h5>
-
-      <input class="form-control mb-2" [(ngModel)]="editCommuterName" placeholder="Full Name">
-      <input class="form-control mb-2" [(ngModel)]="editCommuterEmail" placeholder="Email">
-
-      <div class="text-end">
-        <button class="btn btn-success me-2"
-          (click)="updateUser(c.id, { name: editCommuterName, email: editCommuterEmail })">Save</button>
-        <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+      <div class="otw-summary-card">
+        <span class="otw-summary-label">Commuters</span>
+        <span class="otw-summary-value">{{ commuters().length }}</span>
       </div>
-    </div>
+      <button
+        type="button"
+        class="otw-summary-card otw-summary-cta"
+        routerLink="/admin/dashboard/add-driver">
+        <span class="otw-summary-value">+ Add Driver</span>
+      </button>
+    </section>
 
-  </div>
+    <!-- Drivers section -->
+    <section class="otw-section" *ngIf="activeSection === 'drivers'">
+      <div class="otw-section-header">
+        <h1>Driver Accounts</h1>
+
+      </div>
+
+      <div *ngIf="drivers().length === 0" class="otw-empty">
+        No drivers found.
+      </div>
+
+      <div class="otw-list">
+        <article class="otw-item-card" *ngFor="let d of drivers()">
+          <!-- View -->
+          <div *ngIf="editDriverId !== d.id" class="otw-item-row">
+            <div class="otw-item-info">
+              <h4>{{ d.name }}</h4>
+              <p class="mb-1"><strong>Email:</strong> {{ d.email }}</p>
+              <p class="mb-1"><strong>License:</strong> {{ d.license }}</p>
+              <p class="mb-0"><strong>Plate:</strong> {{ d.plate }}</p>
+            </div>
+            <div class="otw-item-actions">
+              <button class="btn btn-sm otw-btn-outline" (click)="startDriverEdit(d)">Update</button>
+              <button class="btn btn-sm otw-btn-danger" (click)="deleteDriverAccount(d.id)">Delete</button>
+            </div>
+          </div>
+
+          <!-- Edit -->
+          <div *ngIf="editDriverId === d.id" class="otw-item-edit">
+            <h5>Edit Driver</h5>
+            <input class="form-control mb-2" [(ngModel)]="editDriverName" placeholder="Full Name">
+            <input class="form-control mb-2" [(ngModel)]="editDriverEmail" placeholder="Email">
+            <input class="form-control mb-2" [(ngModel)]="editDriverLicense" placeholder="License">
+            <input class="form-control mb-2" [(ngModel)]="editDriverPlate" placeholder="Plate">
+            <div class="text-end">
+              <button class="btn btn-sm otw-btn-pill me-2"
+                (click)="updateDriver(d.id, {
+                  name: editDriverName,
+                  email: editDriverEmail,
+                  license: editDriverLicense,
+                  plate: editDriverPlate
+                })">
+                Save
+              </button>
+              <button class="btn btn-sm btn-secondary" (click)="cancelDriverEdit()">Cancel</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Commuters section -->
+    <section class="otw-section" *ngIf="activeSection === 'commuters'">
+      <div class="otw-section-header">
+        <h1>Commuter Accounts</h1>
+      </div>
+
+      <div *ngIf="commuters().length === 0" class="otw-empty">
+        No commuters found.
+      </div>
+
+      <div class="otw-list">
+        <article class="otw-item-card" *ngFor="let c of commuters()">
+          <!-- View -->
+          <div *ngIf="editId !== c.id" class="otw-item-row">
+            <div class="otw-item-info">
+              <h4>{{ c.name }}</h4>
+              <p class="mb-1"><strong>Email:</strong> {{ c.email }}</p>
+            </div>
+            <div class="otw-item-actions">
+              <button class="btn btn-sm otw-btn-outline" (click)="startEdit(c)">Update</button>
+              <button class="btn btn-sm otw-btn-danger" (click)="deleteCommuter(c.id)">Delete</button>
+            </div>
+          </div>
+
+          <!-- Edit -->
+          <div *ngIf="editId === c.id" class="otw-item-edit">
+            <h5>Edit Commuter</h5>
+            <input class="form-control mb-2" [(ngModel)]="editCommuterName" placeholder="Full Name">
+            <input class="form-control mb-2" [(ngModel)]="editCommuterEmail" placeholder="Email">
+            <div class="text-end">
+              <button class="btn btn-sm otw-btn-pill me-2"
+                (click)="updateUser(c.id, { name: editCommuterName, email: editCommuterEmail })">
+                Save
+              </button>
+              <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
 </div>

@@ -9,6 +9,7 @@ import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
   selector: 'app-add-driver',
   standalone: true,
   templateUrl: './add-driver.html',
+  styleUrl: './add-driver.css',
   imports: [CommonModule, FormsModule, RouterLink]
 })
 export class AddDriver {

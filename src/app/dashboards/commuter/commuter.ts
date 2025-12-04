@@ -15,12 +15,13 @@ import {
 
 import { Auth, onAuthStateChanged, signOut } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-commuter-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './commuter.html',
   styleUrls: ['./commuter.css']
 })
@@ -30,33 +31,28 @@ export class Commuter implements AfterViewInit, OnDestroy {
   userName: string | null = null;
   customUsername: string = '';
   showSettings = false;
-  
+
   accountDropdownOpen = false;
-toggleAccountDropdown() {
-  this.accountDropdownOpen = !this.accountDropdownOpen;
-}
+  toggleAccountDropdown() {
+    this.accountDropdownOpen = !this.accountDropdownOpen;
+  }
 
-showChat = false;
-chatMessages: string[] = [];
-chatText = "";
+  // Chat
+  showChatDashboard = false;
+  chatMessages: string[] = [];
+  chatText = '';
 
+  toggleChat() {
+    this.showChatDashboard = !this.showChatDashboard;
+  }
 
+  sendChat() {
+    if (this.chatText.trim() === '') return;
+    this.chatMessages.push(this.chatText);
+    this.chatText = '';
+  }
 
-sendChat() {
-  if (this.chatText.trim() === "") return;
-  this.chatMessages.push(this.chatText);
-  this.chatText = "";
-}
-
-
-showChatDashboard = false;
-
-toggleChat() {
-  this.showChatDashboard = !this.showChatDashboard;
-}
-
-
-  // Dashboard static fields
+  // Dashboard static fields (still available if you need them)
   route = 'Route 5: Downtown to Uptown';
   delay = '10 min';
   delayTime = '08:30 AM';
@@ -88,9 +84,17 @@ toggleChat() {
   jeepSub: Subscription | null = null;
   communitySub: Subscription | null = null;
 
-  constructor(private firestore: Firestore, private auth: Auth, private router: Router) {
+  // Tools panel
+  showTools = false;
+  toggleTools() {
+    this.showTools = !this.showTools;
+  }
 
-
+  constructor(
+    private firestore: Firestore,
+    private auth: Auth,
+    private router: Router
+  ) {
     // Read logged-in user
     onAuthStateChanged(this.auth, (user) => {
       const saved = localStorage.getItem('customUsername');
@@ -126,11 +130,6 @@ toggleChat() {
       window.location.href = '/login';
     });
   }
-// logout() {
-//   signOut(this.auth).then(() => {
-//     localStorage.removeItem('user');
-//     this.router.navigate(['/login']);
-//   });}
 
   // ===== Lifecycle =====
   ngAfterViewInit() {
@@ -157,20 +156,14 @@ toggleChat() {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // ADD NEW ZOOM BUTTONS inside the map bottom-left
+    // Zoom controls (bottom-left like Google Maps)
     L.control.zoom({
       position: 'bottomleft'
     }).addTo(this.map);
 
     // Geocoder
     // @ts-ignore
-    L.Control.geocoder({ defaultMarkGeocode: false, placeholder: 'Search places...' })
-      .on('markgeocode', (e: any) => {
-        const c = e.geocode.center;
-        this.setMarkerAndCircle(c.lat, c.lng);
-        this.map.fitBounds(e.geocode.bbox);
-      })
-      .addTo(this.map);
+
 
     const center = this.map.getCenter();
     this.createMarkerAndCircle(center.lat, center.lng, this.radius);
@@ -275,18 +268,17 @@ toggleChat() {
       if (this.jeepMarkers.has(j.id)) {
         const m = this.jeepMarkers.get(j.id)! as any;
         m.setLatLng(latlng);
-        m.jeepData = j; // attach full jeep data including plate
+        m.jeepData = j;
         m.setPopupContent(this.jeepPopupContent(j));
       } else {
         const m = L.marker(latlng, { icon: this.jeepIcon }) as any;
-        m.jeepData = j; // attach full jeep data including plate
+        m.jeepData = j;
         m.bindPopup(this.jeepPopupContent(j));
         m.addTo(this.map);
         this.jeepMarkers.set(j.id, m);
       }
     }
 
-    // Remove missing markers
     for (const id of Array.from(this.jeepMarkers.keys())) {
       if (!seen.has(id)) {
         const m = this.jeepMarkers.get(id)!;
@@ -395,12 +387,6 @@ toggleChat() {
     this.newPostText = '';
   }
 
-  showTools = false; // hidden on load
-
-  toggleTools() {
-    this.showTools = !this.showTools;
-  }
-
   saveUsername() {
     const name = (this.customUsername || '').trim();
     if (!name) return alert('Username cannot be empty.');
@@ -429,15 +415,44 @@ toggleChat() {
     return R * (2 * Math.atan2(Math.sqrt(aa), Math.sqrt(1 - aa)));
   }
 
-  private distanceMeters(a: { lat: number, lng: number }, b: { lat: number, lng: number }) {
+   private distanceMeters(a: { lat: number, lng: number }, b: { lat: number, lng: number }) {
     return this.haversineKm(a, b) * 1000;
   }
-}
 
-// Enable popup close button to work
+  // ===== Search bar (center pill) =====
+  searchText = '';
+
+  // Simple geocoding using Nominatim (OpenStreetMap)
+  async runSearch() {
+    const q = (this.searchText || '').trim();
+    if (!q) return;
+
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`;
+
+    try {
+      const res = await fetch(url);
+      const data: any[] = await res.json();
+      if (!data.length) {
+        alert('No results found');
+        return;
+      }
+
+      const best = data[0];
+      const lat = parseFloat(best.lat);
+      const lon = parseFloat(best.lon);
+
+      this.setMarkerAndCircle(lat, lon);
+      this.map.setView([lat, lon], 15);
+      this.evaluateNearest();
+    } catch (e) {
+      console.error('Search error', e);
+      alert('Search failed. Please try again.');
+    }
+  }
+}  // <== end of Commuter class
+
+// Enable popup close button to work (if used)
 (window as any).closeLeafletPopup = () => {
   const map = (window as any).leafletMapRef;
   if (map) map.closePopup();
 };
-
-

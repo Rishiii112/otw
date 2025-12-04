@@ -1,120 +1,133 @@
-/* Background with image and opacity overlay */
-.login-background {
+.otw-login-page {
   position: relative;
-  background-image: url('../../../../public/aurora.jpg'); /* Replace with your image path */
-  background-size: cover;
-  background-position: center;
-  width: 100%;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Overlay to reduce opacity */
-.login-background::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.7); /* Adjust opacity (0.7 = 70%) */
-  z-index: 1;
-}
-
-/* Login card styling */
-.login-card {
-  position: relative;
-  z-index: 2;
-  max-width: 400px;
-  width: 100%;
-  background: #ffffff;
-  border-radius: 1rem;
-  border: 2px solid #FF4500;
-  box-shadow: 0 10px 25px rgba(255, 102, 0, 0.15);
-  padding: 2rem;
   overflow: hidden;
 }
 
-/* Floating decorative shapes */
-.login-card::before,
-.login-card::after {
-  content: "";
+/* BACKGROUND: baguio image + dark overlay */
+.otw-login-bg {
   position: absolute;
-  border-radius: 50%;
-  opacity: 0.1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(10, 6, 30, 0.65), rgba(10, 6, 30, 0.85)),
+    url("../../../assets/baguio-philippines.jpg");
+  /* if needed, try: url("../../../assets/baguio-philippines.jpg"); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
-.login-card::before {
-  width: 120px;
-  height: 120px;
-  background-color: #FF4500;
-  top: -40px;
-  right: -40px;
+/* CONTENT + CARD (same as before) */
+.otw-login-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
 }
 
-.login-card::after {
-  width: 80px;
-  height: 80px;
-  background-color: #FF4500;
-  bottom: -20px;
-  left: -20px;
+.otw-login-card {
+  width: 100%;
+  max-width: 380px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 22px 55px rgba(24, 11, 60, 0.55);
+  padding: 2rem 1.75rem;
 }
 
-/* Text orange */
-.text-orange {
-  color: #FF4500 !important;
-}
-
-/* Orange button */
-.btn-orange {
-  background-color: #FF4500 !important;
-  color: #ffffff !important;
-  border: 2px solid #FF4500 !important;
-  font-weight: 600;
-  border-radius: 50px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-orange:hover {
-  background-color: #e65c00 !important;
-  border-color: #e65c00 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(255,102,0,0.4);
-}
-
-/* Input focus effect */
-.form-control:focus {
-  border-color: #FF4500;
-  box-shadow: 0 0 0 0.2rem rgba(255,102,0,0.2);
-}
-.logo-placeholder-bg {
-  width: 100px;                 /* slightly bigger for better design */
-  height: 100px;
+/* LOGO (already working) */
+.otw-logo-bg {
+  width: 84px;
+  height: 84px;
+  border-radius: 24px;
   margin: 0 auto;
-  border-radius: 50%;
-  border: 3px solid #FF4500;    /* stronger border */
-  background: #fff url('../../../assets/logo.png') no-repeat center center;
-  background-size: 70%;         /* smaller than container for padding effect */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* subtle shadow */
-  transition: transform 0.3s;
+  background-image: url("../../../assets/logo.png");
+  /* or "../../../assets/1000001590.png" if that is what worked */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 18px 40px rgba(24, 11, 60, 0.45);
 }
 
-/* Optional hover effect */
-.logo-placeholder-bg:hover {
-  transform: scale(1.05);
+/* TEXT */
+.otw-login-title {
+  margin-top: 1rem;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: #1f1f2e;
+  letter-spacing: 0.02em;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 576px) {
-  .login-card {
-    padding: 1.5rem 1rem;
-  }
+.otw-login-subtitle {
+  margin: 0.2rem 0 0.6rem;
+  font-size: 0.9rem;
+  color: rgba(15, 10, 40, 0.7);
 }
 
-@media (max-width: 576px) {
-  .logo-placeholder-bg {
-    width: 80px;
-    height: 80px;
+/* INPUTS */
+.otw-input {
+  border-radius: 999px;
+  border: 1px solid rgba(15, 10, 40, 0.18);
+  font-size: 0.95rem;
+}
+
+.otw-input:focus {
+  border-color: #ff9b3a;
+  box-shadow: 0 0 0 0.15rem rgba(255, 155, 58, 0.35);
+}
+
+/* BUTTON */
+.otw-btn-primary {
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: linear-gradient(135deg, #ff9b3a 0%, #ffb767 40%, #5a2ea8 100%);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.96rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  box-shadow: 0 16px 36px rgba(24, 11, 60, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.otw-btn-primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 22px 48px rgba(24, 11, 60, 0.6);
+}
+
+.otw-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 12px 26px rgba(24, 11, 60, 0.4);
+}
+
+/* FOOTER */
+.otw-login-footer {
+  font-size: 0.85rem;
+  color: rgba(15, 10, 40, 0.7);
+}
+
+.otw-login-footer .otw-link {
+  margin-left: 0.25rem;
+  color: #ff9b3a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.otw-login-footer .otw-link:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  .otw-login-card {
+    padding: 2.3rem 2.2rem;
+    max-width: 420px;
   }
 }

@@ -1,53 +1,51 @@
-<div class="login-background d-flex justify-content-center align-items-center min-vh-100">
-  <div class="card p-4 rounded-4 shadow login-card">
+<div class="otw-login-page">
+  <div class="otw-login-bg"></div>
 
-    <!-- Logo as background div -->
-    <div class="text-center mb-4">
-      <div class="logo-placeholder-bg mb-3"></div>
-      <h2 class="fw-bold text-orange">Welcome Back</h2>
-      <p class="text-muted">Login to your account</p>
-    </div>
+  <div class="otw-login-content">
+    <div class="otw-login-card">
+      <div class="otw-login-header text-center">
+  <div class="otw-logo-bg mb-3"></div>
+  <h2 class="otw-login-title">Welcome to OTW</h2>
+  <p class="otw-login-subtitle">Login to your account</p>
+</div>
 
-    <!-- Error message -->
-    <div *ngIf="error()" class="alert alert-danger">
-      {{ error() }}
-    </div>
 
-    <!-- Email input -->
-    <div class="form-floating mb-3">
-      <input
-        type="email"
-        class="form-control"
-        id="email"
-        placeholder="Email"
-        [(ngModel)]="email"
-        (keydown.enter)="login()"
-      />
-      <label for="email">Email</label>
-    </div>
+      <div *ngIf="error()" class="alert alert-danger mb-3">
+        {{ error() }}
+      </div>
 
-    <!-- Password input -->
-    <div class="form-floating mb-4">
-      <input
-        type="password"
-        class="form-control"
-        id="password"
-        placeholder="Password"
-        [(ngModel)]="password"
-        (keydown.enter)="login()"
-      />
-      <label for="password">Password</label>
-    </div>
+      <div class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control otw-input"
+          id="email"
+          placeholder="Email"
+          [(ngModel)]="email"
+          (keydown.enter)="login()"
+        />
+        <label for="email">Email</label>
+      </div>
 
-    <!-- Login button -->
-    <button class="btn btn-orange w-100 py-2 mb-3" (click)="login()">
-      Login
-    </button>
+      <div class="form-floating mb-4">
+        <input
+          type="password"
+          class="form-control otw-input"
+          id="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          (keydown.enter)="login()"
+        />
+        <label for="password">Password</label>
+      </div>
 
-    <!-- Signup link -->
-    <div class="text-center">
-      <span>Don't have an account? </span>
-      <a routerLink="/signup" class="text-orange fw-bold">Create an account</a>
+      <button class="btn otw-btn-primary w-100 mb-3" (click)="login()">
+        Login
+      </button>
+
+      <div class="otw-login-footer text-center">
+        <span>Don't have an account?</span>
+        <a routerLink="/signup" class="otw-link">Create an account</a>
+      </div>
     </div>
   </div>
 </div>

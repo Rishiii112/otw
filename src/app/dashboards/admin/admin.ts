@@ -1,6 +1,16 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Firestore, collection, query, where, getDocs, doc, updateDoc, deleteDoc, addDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  addDoc
+} from '@angular/fire/firestore';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
@@ -11,7 +21,8 @@ import { Router } from '@angular/router';
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [CommonModule, HttpClientModule, FormsModule, RouterModule, RouterLink],
-  templateUrl: './admin.html'
+  templateUrl: './admin.html',
+  styleUrl: './admin.css',
 })
 export class Admin implements OnInit {
 
@@ -22,7 +33,7 @@ export class Admin implements OnInit {
   newDriverEmail = '';
   newDriverLicense = '';
   newDriverPlate = '';
-
+  userMenuOpen = false;
   // -------------------------
   // COMMUTER EDIT
   // -------------------------
@@ -45,6 +56,11 @@ export class Admin implements OnInit {
   commuters = signal<any[]>([]);
   drivers = signal<any[]>([]);
 
+  // -------------------------
+  // UI STATE (which section)
+  // -------------------------
+  activeSection: 'drivers' | 'commuters' = 'drivers';
+
   constructor(
     private firestore: Firestore,
     private http: HttpClient,
@@ -52,10 +68,18 @@ export class Admin implements OnInit {
     private router: Router
   ) {}
 
-  
   async ngOnInit() {
     await this.loadDrivers();
     await this.loadCommuters();
+  }
+
+  // toggle sidebar buttons
+  showDrivers() {
+    this.activeSection = 'drivers';
+  }
+
+  showCommuters() {
+    this.activeSection = 'commuters';
   }
 
   // ==============================
@@ -65,7 +89,7 @@ export class Admin implements OnInit {
     const usersRef = collection(this.firestore, 'users');
     const commuterQuery = query(usersRef, where('role', '==', 'commuter'));
     const snap = await getDocs(commuterQuery);
-    this.commuters.set(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    this.commuters.set(snap.docs.map(d => ({ id: d.id, ...d.data() })));
   }
 
   // ==============================
@@ -75,7 +99,7 @@ export class Admin implements OnInit {
     const usersRef = collection(this.firestore, 'users');
     const driverQuery = query(usersRef, where('role', '==', 'driver'));
     const snap = await getDocs(driverQuery);
-    this.drivers.set(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    this.drivers.set(snap.docs.map(d => ({ id: d.id, ...d.data() })));
   }
 
   // ==============================
@@ -105,8 +129,6 @@ export class Admin implements OnInit {
     alert('Commuter deleted.');
     await this.loadCommuters();
   }
-
-  
 
   // ==============================
   // DRIVER FUNCTIONS
@@ -170,14 +192,13 @@ export class Admin implements OnInit {
     await this.loadDrivers();
   }
 
-  // logout() {
-  // signOut(this.auth).then(() => {
-  //   localStorage.removeItem('user');
-  //   this.router.navigate(['/login']);
-  // });}
+  // ==============================
+  // LOGOUT
+  // ==============================
   logout() {
     signOut(this.auth).then(() => {
       alert('Logged out successfully!');
       window.location.href = '/login';
     });
+  }
 }

@@ -1,12 +1,12 @@
-<div class="otw-commuter-shell">
+<div class="otw-commuter-shell"
+     [class.panel-open]="showTools || showChatDashboard">
+
   <!-- PHONE FRAME WITH MAP -->
   <div class="phone-frame">
     <!-- Phone image -->
-<img src="assets/iphone-frame.png"
-     alt="iPhone frame"
-     class="phone-image" />
-
-
+    <img src="assets/iphone-frame.png"
+         alt="iPhone frame"
+         class="phone-image" />
 
     <!-- Screen window positioned over the image -->
     <div class="phone-screen">
@@ -45,7 +45,6 @@
             <button class="gm-chip" (click)="focusNearestJeepney()">Jeepneys</button>
             <button class="gm-chip" (click)="focusStop()">Stops</button>
             <button class="gm-chip" (click)="focusTerminal()">Terminal</button>
-
           </div>
 
           <!-- RIGHT CONTROLS (e.g., locate me) -->
@@ -61,16 +60,15 @@
               <div class="gm-bottom-title">Nearest Jeepneys</div>
 
               <div class="gm-bottom-list">
-<div class="gm-bottom-list">
-  <div
-    class="gm-bottom-sub"
-    *ngFor="let j of nearestJeepneys">
-    <span class="jeep-bullet">•</span>
-    Plate {{ j.plate }} - {{ j.distance }} m - {{ j.eta }} min -
-    Passengers: {{ j.passengerCount || 0 }} /
-    {{ j.capacity || 'N/A' }}
-  </div>
-</div>
+                <div
+                  class="gm-bottom-sub"
+                  *ngFor="let j of nearestJeepneys">
+                  <span class="jeep-bullet">•</span>
+                  Plate {{ j.plate }} - {{ j.distance }} m - {{ j.eta }} min -
+                  Passengers: {{ j.passengerCount || 0 }} /
+                  {{ j.capacity || 'N/A' }}
+                </div>
+              </div>
             </div>
           </div>
           <!-- END BOTTOM BAR -->
@@ -80,57 +78,57 @@
   </div>
 
   <!-- TOOLS PANEL (SLIDE FROM LEFT) -->
-<aside class="map-sidebar" [class.visible]="showTools">
-  <div class="sidebar-header">
-    <strong>Interactive Map Tool</strong>
+  <aside class="map-sidebar" [class.visible]="showTools">
+    <div class="sidebar-header">
+      <strong>Interactive Map Tool</strong>
 
-    <div class="sidebar-header-actions">
-      <button class="btn small" (click)="locateMe()">📍 My location</button>
-      <button class="sidebar-close" (click)="showTools = false">✕</button>
+      <div class="sidebar-header-actions">
+        <button class="btn small" (click)="locateMe()">📍 My location</button>
+        <button class="sidebar-close" (click)="showTools = false">✕</button>
+      </div>
     </div>
-  </div>
 
-  <div class="control-row">
-    <label for="radiusRange">Radius (m)</label>
-    <input
-      id="radiusRange"
-      type="range"
-      min="50"
-      max="5000"
-      step="10"
-      [(ngModel)]="radius"
-      (input)="updateRadiusFromUI()" />
-  </div>
+    <div class="control-row">
+      <label for="radiusRange">Radius (m)</label>
+      <input
+        id="radiusRange"
+        type="range"
+        min="50"
+        max="5000"
+        step="10"
+        [(ngModel)]="radius"
+        (input)="updateRadiusFromUI()" />
+    </div>
 
-  <div class="control-row">
-    <input
-      id="radiusNumber"
-      type="number"
-      min="50"
-      max="5000"
-      step="10"
-      [(ngModel)]="radius"
-      (change)="updateRadiusFromUI()"
-      style="flex: 1; padding: 6px;" />
-    <button class="btn" (click)="fitToCircle()">Fit</button>
-  </div>
+    <div class="control-row">
+      <input
+        id="radiusNumber"
+        type="number"
+        min="50"
+        max="5000"
+        step="10"
+        [(ngModel)]="radius"
+        (change)="updateRadiusFromUI()"
+        style="flex: 1; padding: 6px;" />
+      <button class="btn" (click)="fitToCircle()">Fit</button>
+    </div>
 
-  <div class="coords">
-    <div>Radius: <span>{{ radius }}</span> m</div>
-  </div>
+    <div class="coords">
+      <div>Radius: <span>{{ radius }}</span> m</div>
+    </div>
 
-  <p class="small">Drag the marker to move the circle.</p>
-</aside>
+    <p class="small">Drag the marker to move the circle.</p>
+  </aside>
 
   <!-- CHAT / COMMUNITY SLIDE-OVER (RIGHT) -->
-<aside class="right-dashboard" [class.show]="showChatDashboard">
-  <div class="community">
-    <div class="community-header">
-      <h4>Community</h4>
-      <button class="community-close" (click)="toggleChat()">✕</button>
-    </div>
+  <aside class="right-dashboard" [class.show]="showChatDashboard">
+    <div class="community">
+      <div class="community-header">
+        <h4>Community</h4>
+        <button class="community-close" (click)="toggleChat()">✕</button>
+      </div>
 
-    <div class="community-input">
+      <div class="community-input">
         <textarea
           [(ngModel)]="newPostText"
           placeholder="Share an update…"
